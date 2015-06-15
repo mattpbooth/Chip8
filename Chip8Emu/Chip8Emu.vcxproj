@@ -75,10 +75,12 @@
   <ItemGroup>
     <ClInclude Include="Emu.h" />
     <ClInclude Include="EmuTypes.h" />
+    <ClInclude Include="PlatformArduino.h" />
     <ClInclude Include="PlatformWin.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Emu.cpp" />
+    <ClCompile Include="PlatformArduino.cpp" />
     <ClCompile Include="PlatformWin.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -19,7 +19,7 @@ int _tmain(int argc, _TCHAR *argv[])
 	else
 	{
 		wstring wideGame(argv[1]);
-		mainLoop(string(wideGame.begin(), wideGame.end()));
+		mainLoop(string(wideGame.begin(), wideGame.end()).c_str());
 	}
 	return 0;
 }

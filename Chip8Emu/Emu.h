@@ -1,8 +1,6 @@
 #pragma once
 
-#include <string>
-
 namespace SynchingFeeling
 {
-	void mainLoop(const std::string& gameName);
+	void mainLoop(const char* gameName);
 }

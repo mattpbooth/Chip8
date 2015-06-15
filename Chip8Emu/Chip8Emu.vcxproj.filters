@@ -4,9 +4,11 @@
     <ClInclude Include="Emu.h" />
     <ClInclude Include="PlatformWin.h" />
     <ClInclude Include="EmuTypes.h" />
+    <ClInclude Include="PlatformArduino.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Emu.cpp" />
     <ClCompile Include="PlatformWin.cpp" />
+    <ClCompile Include="PlatformArduino.cpp" />
   </ItemGroup>
 </Project>

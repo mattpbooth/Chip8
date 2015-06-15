@@ -5,6 +5,10 @@
 
 #include "Chip8Emu/PlatformWin.h"
 
+#include <iostream>
+#include <fstream>
+#include <random>
+
 #include <SDL.h>
 
 using namespace std;
@@ -35,6 +39,8 @@ namespace SynchingFeeling
 		static SDL_PixelFormat* gPixelFormat;
 		static SDL_AudioSpec* gObtainedAudioSpec;
 		static SDL_AudioStatus gAudioStatus;
+		static mt19937 gRandGen;
+
 
 		// Key mappings
 		//
@@ -64,6 +70,36 @@ namespace SynchingFeeling
 		static const Int32 kKeyMappingsSize = (sizeof(kKeyMappings) / sizeof(Int32));
 	
 	} // namespace
+
+	Char readStaticChar(const Address address)
+	{
+		return static_cast<Char>(*&address);
+	}
+
+	UChar readStaticUChar(const Address address)
+	{
+		return static_cast<UChar>(*&address);
+	}
+	
+	Int16 readStaticInt16(const Address address)
+	{
+		return static_cast<Int16>(*&address);
+	}
+
+	UInt16 readStaticUInt16(const Address address)
+	{
+		return static_cast<UInt16>(*&address);
+	}
+	
+	Int32 readStaticInt32(const Address address)
+	{
+		return static_cast<Int32>(*&address);
+	}
+	
+	UInt32 readStaticUInt32(const Address address)
+	{
+		return static_cast<UInt32>(*&address);
+	}
 
 	void platformInit(const Int32 pixelsWidth, const Int32 pixelsHeight, const Int32 screenWidth, const Int32 screenHeight)
 	{
@@ -138,6 +174,10 @@ namespace SynchingFeeling
 		{
 			fail("Could not initialise audio! SDL_Error: ", SDL_GetError());
 		}
+
+		// Seed rand
+		const auto seed = random_device()();
+		gRandGen.seed(seed);
 	}
 
 	void platformDeInit()
@@ -283,7 +323,7 @@ namespace SynchingFeeling
 
 	bool platformCanUpdate(UInt32& inOutTicksIntoYield, const UInt32 yieldTimeMS)
 	{
-		auto ticks = SDL_GetTicks();
+		UInt32 ticks = SDL_GetTicks();
 		if (inOutTicksIntoYield == 0)
 		{
 			inOutTicksIntoYield = ticks;
@@ -299,6 +339,28 @@ namespace SynchingFeeling
 
 		return false;
 	}
+
+	void platformLoadGame(const char* gameName, char* readBuffer, const UInt32 readSize)
+	{
+		ifstream stream;
+		stream.open(gameName, ios::in | ios::binary);
+		if (!stream.is_open())
+		{
+			fail("Failed to open game: ", gameName);
+			return;
+		}
+
+		stream.seekg(0, ios::beg);
+		stream.read(readBuffer, readSize);
+		stream.close();
+	}
+
+	UChar platformRand(const UChar mask)
+	{
+		uniform_int_distribution<> dist(0, mask);
+		return static_cast<UChar>(dist(gRandGen));
+	}
+
 
 } // namespace SynchingFeeling
 
